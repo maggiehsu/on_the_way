@@ -1,0 +1,170 @@
+<div class="container">
+  <div class="row title">
+    <!-- <div class="col-xs-12"><h2>Trip details</h2></div>
+
+  </div>
+  <div class="row criteria">
+    <div class="col-xs-12"><dt>Starting Location</dt>
+      <dd><%= @start_add  %></dd>
+      <br>
+      <dt>Ending Location</dt>
+      <dd><%= @end_add %></dd>
+      <br></div>
+    </div> -->
+    <div class="result title row">
+      <div class="col-xs-12"><h2>Here are the best <%= @term %> options on your way:</h2></div>
+
+    </div>
+    <div class="row results map">
+      <div class="col-md-6">
+        <table class="table table-striped">
+          <tr>
+            <th>Photo</th>
+            <th>Name</th>
+            <th>Yelp Rating</th>
+            <th>
+              Address
+            </th>
+            <th>
+              Directions
+            </th>
+          </tr>
+          <tr>
+
+
+            <% @response.businesses.each do |business| %>
+
+            <td><img src="<%= business.image_url %>">  </td>
+            <td><a href="<%= business.url %>"><%= business.name %></a></td>
+            <td><img src="<%= business.rating_img_url %>"></td>
+            <td>
+              <% business.location.display_address.each do |address|%>
+              <%= address %>
+              <% end  %>
+            </td>
+            <td>
+              <form action="/waypoint">
+                <input type="hidden" class="form-control" name="start_address" id="start_address" value="<%= @start_add %>">
+                <input type="hidden" class="form-control" name="end_address" id="end_address" value="<%= @end_add %>">
+                <input type="hidden" class="form-control" name="waypoint" id="waypoint" value="<%= business.location.address %>">
+                <input type="hidden" class="form-control" name="name" id="name" value="<%= business.name %>">
+                <input type="hidden" class="form-control" name="term" id="term" value="<%= @term %>" >
+                <input type="hidden" class="form-control" name="sort_method" id="sort_method" value="<%= @sort_method %>" >
+                <input type="hidden" class="form-control" name="city" id="city" value="<%= business.location.city %>">
+                <button class="btn btn-success">Route me!</button>
+              </form>
+
+            </td>
+
+          </tr>
+          <% end %>
+        </table>
+
+
+
+      </div>
+      <div class="row results map">
+        <div class="col-md-6">
+
+        <style>
+        #map {
+          width: 500px;
+          height: 400px;
+        }
+        </style>
+
+        <div id="map"></div>
+        <script>
+
+        function initMap() {
+          var start = {lat: <%= @start_latitude %>, lng: <%= @start_longitude %>};
+          var end = {lat: <%= @end_latitude %>, lng: <%= @end_longitude %>};
+
+          var map = new google.maps.Map(document.getElementById('map'), {
+            center: start,
+            scrollwheel: false,
+            zoom: 7
+          });
+          <%  @response.businesses.each do |business|   %>
+
+          var marker = new google.maps.Marker({
+            position: {lat: <%= business.location.coordinate.latitude %>, lng: <%= business.location.coordinate.longitude %>},
+            map: map,
+            title: "<%= business.name %>",
+            icon: 'http://maps.google.com/mapfiles/ms/icons/red-dot.png'
+          });
+          var directionsDisplay = new google.maps.DirectionsRenderer({
+            map: map
+          });
+          <% end %>
+          // Set destination, origin and travel mode.
+          var request = {
+            destination: end,
+            // waypoints: [
+            //   {
+            //     location:"<%= @waypoint %>",
+            //     stopover:true
+            //   }],
+            origin: start,
+            travelMode: google.maps.TravelMode.DRIVING
+          };
+
+
+          // Pass the directions request to the directions service.
+          var directionsService = new google.maps.DirectionsService();
+          directionsService.route(request, function(response, status) {
+            if (status == google.maps.DirectionsStatus.OK) {
+              // Display the route on the map.
+              directionsDisplay.setDirections(response);
+            }
+          });
+          map.fitBounds(bounds)
+        }
+
+
+
+        </script>
+        <script src="https://maps.googleapis.com/maps/api/js?callback=initMap" async defer></script>
+
+          <form action="/street_to_coords" class="form-inline">
+            <div class="form-group">
+              <input type="hidden" class="form-control" name="start_address" id="start_address" value="<%= @start_add %>" >
+
+              <input type="hidden" class="form-control" name="end_address" id="end_address" value="<%= @end_add %>" >
+              <label for="term">
+                Find something else along the way:
+              </label>
+              <input type="text" class="form-control" name="term" id="term" required="required" value="<%= @term %>" >
+            </div>
+            <div class="form-group">
+              <label for="sort_method">
+                sorted by
+              </label>
+              <%= select_tag :sort_method, options_for_select([["Best matched",0], ["Distance",1], ["Highest Rated",2]]), :class => "form-control"  %>
+            </div>
+
+            <button class="btn btn-success">Submit</button>
+          </form>
+
+      </div>
+    </div>
+
+  </div>
+
+  <div class="footer">
+    <div class="col-xs-12">
+    </div>
+  </div>
+
+
+  <div class="row text-center ">
+    <div class="">
+          <a href="/" class="btn btn-info"><h4><b>New search</h4></a><b></a>
+            <br>
+            <br>
+            <br>
+            <br>
+    </div>
+
+    </div>
+</div>

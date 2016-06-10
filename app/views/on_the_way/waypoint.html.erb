@@ -1,0 +1,15 @@
+<h2>Directions to <%= @name %></h2>
+
+<iframe
+width="800"
+height="600"
+frameborder="0" style="border:0"
+src="//www.google.com/maps/embed/v1/directions?origin=<%= @start_address %>
+&destination=<%= @end_address %>
+&waypoints=<%= @waypoint %>
+&key=AIzaSyBqorduvzpO1mRWJaC_tBowmmsLojlqt_8" >
+</iframe>
+<div class="">
+  <a href="/street_to_coords?start_address=<%= @start_address %>&end_address=<%= @end_address %>&waypoint=&term=<%= @term %>&sort_method=<%= @sort_method %>" class="btn btn-success">Back to results</a>
+
+</div>
