@@ -1,3 +1,8 @@
+<div class="container">
+  <div class="row title">
+  <div class="col-md-2">
+  </div>
+  <div class="col-md-8">
 <h2>Directions to <%= @name %></h2>
 
 <iframe
@@ -9,7 +14,30 @@ src="//www.google.com/maps/embed/v1/directions?origin=<%= @start_address %>
 &waypoints=<%= @waypoint %>
 &key=AIzaSyBqorduvzpO1mRWJaC_tBowmmsLojlqt_8" >
 </iframe>
-<div class="">
+<div class="row text-center">
   <a href="/street_to_coords?start_address=<%= @start_address %>&end_address=<%= @end_address %>&waypoint=&term=<%= @term %>&sort_method=<%= @sort_method %>" class="btn btn-success">Back to results</a>
 
+
+  <a href="/" class="btn btn-info">New search</a>
+
+</div>
+
+<div class="col-md-2">
+</div>
+
+<div class="row">
+
+<div class="col-xs-12 text-center">
+  <br><br>
+<img class="" width="80" src="/logo.png"><img class="" width="80" src="/location.png"><img class="" width="80" src="/find.png">
+</div>
+
+</div>
+<div class="row">
+<div class="text-center">
+<h6>Copyright © 2016</h6>
+</div>
+</div>
+</div>
+</div>
 </div>

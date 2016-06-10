@@ -35,7 +35,7 @@
             <% @response.businesses.each do |business| %>
 
             <td><img src="<%= business.image_url %>">  </td>
-            <td><a href="<%= business.url %>"><%= business.name %></a></td>
+            <td><a href="<%= business.url %>" target="_blank"><%= business.name %></a></td>
             <td><img src="<%= business.rating_img_url %>"></td>
             <td>
               <% business.location.display_address.each do |address|%>
@@ -69,7 +69,7 @@
         <style>
         #map {
           width: 500px;
-          height: 400px;
+          height: 500px;
         }
         </style>
 
@@ -126,45 +126,104 @@
         </script>
         <script src="https://maps.googleapis.com/maps/api/js?callback=initMap" async defer></script>
 
-          <form action="/street_to_coords" class="form-inline">
-            <div class="form-group">
-              <input type="hidden" class="form-control" name="start_address" id="start_address" value="<%= @start_add %>" >
 
-              <input type="hidden" class="form-control" name="end_address" id="end_address" value="<%= @end_add %>" >
-              <label for="term">
-                Find something else along the way:
-              </label>
-              <input type="text" class="form-control" name="term" id="term" required="required" value="<%= @term %>" >
-            </div>
-            <div class="form-group">
-              <label for="sort_method">
-                sorted by
-              </label>
-              <%= select_tag :sort_method, options_for_select([["Best matched",0], ["Distance",1], ["Highest Rated",2]]), :class => "form-control"  %>
-            </div>
-
-            <button class="btn btn-success">Submit</button>
-          </form>
 
       </div>
     </div>
 
   </div>
 
-  <div class="footer">
+  <div class="container">
     <div class="col-xs-12">
     </div>
   </div>
+  <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+    <div class="panel panel-default">
+      <div class="panel-heading" role="tab" id="headingOne">
+        <h4 class="panel-title">
+          <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+          Find something else along the way
+          </a>
+        </h4>
+      </div>
+      <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+        <div class="panel-body">
+          <form action="/street_to_coords" class="form-inline">
+            <div class="form-group">
+              <input type="hidden" class="form-control" name="start_address" id="start_address" value="<%= @start_add %>" >
 
+              <input type="hidden" class="form-control" name="end_address" id="end_address" value="<%= @end_add %>" >
+              <label for="term">
+                Search for
+              </label>
+              <input type="text" class="form-control" name="term" id="term" required="required" value="<%= @term %>" >
+            </div>
+            <div class="form-group">
+              <label for="sort_method">
+                Sorted by
+              </label>
+              <%= select_tag :sort_method, options_for_select([["Best matched",0], ["Distance",1], ["Highest Rated",2]]), :class => "form-control"  %>
+            </div>
 
-  <div class="row text-center ">
-    <div class="">
-          <a href="/" class="btn btn-info"><h4><b>New search</h4></a><b></a>
-            <br>
-            <br>
-            <br>
-            <br>
+            <button class="btn btn-success">Submit</button>
+          </form>
+        </div>
+      </div>
     </div>
-
+    <div class="panel panel-default">
+    <div class="panel-heading" role="tab" id="headingTwo">
+      <h4 class="panel-title">
+        <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+          New search
+        </a>
+      </h4>
     </div>
+    <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+      <div class="panel-body">
+        <h2>Where are you going?</h2>
+        <form action="/street_to_coords">
+          <div class="form-group">
+            <label for="start_address">Starting Address</label>
+            <input type="text" class="form-control" name="start_address" id="start_address" value="Street Address, City, State" required="required" >
+          </div>
+          <div class="form-group">
+            <label for="end_address">Ending Address</label>
+
+            <input type="text" class="form-control" name="end_address" id="end_address" value="Street Address, City, State" required="required">
+          </div>
+        <input type="hidden" class="form-control" name="waypoint" id="waypoint">
+          <h2>What are you looking for on the way?</h2>
+          <div class="form-group">
+            <label for="term">Search for</label>
+            <input type="text" class="form-control" name="term" id="term" required="required" >
+          </div>
+          <div class="form-group">
+          <label for="sort_method">
+              Sort by
+            </label>
+            <%= select_tag :sort_method, options_for_select([["Best matched",0], ["Distance",1], ["Highest Rated",2]]), :class => "form-control"  %>
+        </div>
+          <button class="btn btn-success center-block">Route me!</button>
+        </form>
+      </div>
+    </div>
+  </div>
+  <div class="row title">
+  <div class="col-md-2">
+  </div>
+  <div class="col-md-8 text-center">
+
+
+<img class="" width="80" src="/logo.png"><img class="" width="80" src="/location.png"><img class="" width="80" src="/find.png">
+</div>
+<div class="col-md-2">
+</div>
+</div>
+<div class="row">
+  <div class="text-center">
+  <h6>Copyright © 2016</h6>  
+  </div>
+
+</div>
+<br><br><br><br>
 </div>
